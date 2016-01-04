@@ -1,13 +1,16 @@
 package com.mioffers.expandablelistview;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,12 +27,14 @@ public class MainActivity extends AppCompatActivity {
     ExpandableListView expListView;
     List<String> listDataHeader;
     HashMap<String, List<String>> listDataChild;
+    Button reminderButton;
+    private Reminder reminder=new Reminder();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Firebase.setAndroidContext(this);
-        Firebase firebaseRef = new Firebase("https://mioffers.firebaseIO.com/");
+        final Firebase firebaseRef = new Firebase("https://mioffers.firebaseIO.com/");
         setContentView(R.layout.activity_main);
 
         expListView = (ExpandableListView) findViewById(R.id.lvExp);
@@ -42,9 +47,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onGroupClick(ExpandableListView parent, View v,
                                         int groupPosition, long id) {
-                 Toast.makeText(getApplicationContext(),
-                 "Group Clicked " + listDataHeader.get(groupPosition),
-                 Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(),
+                        "Group Clicked " + listDataHeader.get(groupPosition),
+                        Toast.LENGTH_SHORT).show();
                 return false;
             }
         });
@@ -93,6 +98,15 @@ public class MainActivity extends AppCompatActivity {
                                 childPosition), Toast.LENGTH_SHORT)
                         .show();
                 return false;
+            }
+        });
+        View inflater = getLayoutInflater().inflate(R.layout.list_item, null);
+        reminderButton = (Button) inflater.findViewById(R.id.reminder);
+        reminderButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(MainActivity.this, "Button Clicked", Toast.LENGTH_SHORT).show();
+                reminder.putReminder("10", "2", firebaseRef);  //todo : uniqueId for each user, offer
             }
         });
 
