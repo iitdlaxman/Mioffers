@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="match_parent"
+android:layout_height="55dip"
+android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/description"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textSize="15dip"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/reminder"
+        android:id="@+id/reminder"
+        android:layout_below="@id/description"
+        android:layout_marginTop="1dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/map_location"
+        android:id="@+id/mapLocation"
+        android:layout_alignBottom="@+id/reminder"
+        android:layout_toEndOf="@+id/reminder"
+        android:layout_marginTop="1dp"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/share"
+        android:id="@+id/share"
+        android:layout_alignBottom="@+id/reminder"
+        android:layout_toEndOf="@+id/mapLocation"
+        android:layout_marginTop="1dp"/>
+
+
+</RelativeLayout>

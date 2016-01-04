@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="8dp"
+    android:background="#000000">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/companyImage"
+        android:src="@android:drawable/ic_dialog_email"/>
+
+    <TextView
+        android:id="@+id/offerTitle"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/companyImage"
+        android:paddingLeft="@dimen/left_padding_from_image"
+        android:textSize="17dp"
+        android:textColor="#f9f93d" />
+
+    <TextView
+        android:id="@+id/companyName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/companyImage"
+        android:paddingTop="@dimen/bottom_padding_from_image"
+        android:textSize="11dp"
+        android:textColor="#09f93d" />
+
+    <TextView
+        android:id="@+id/dateTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/companyImage"
+        android:layout_toRightOf="@id/companyName"
+        android:paddingLeft="@dimen/padding_from_text"
+        android:paddingTop="@dimen/bottom_padding_from_image"
+        android:textSize="11dp"
+        android:textColor="#09f93d" />
+
+
+
+
+</RelativeLayout>
