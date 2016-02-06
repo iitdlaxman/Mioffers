@@ -1,4 +1,4 @@
-package com.mioffers.expandablelistview;
+package com.mioffers.MiOffers;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -11,7 +11,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.ListView;
@@ -19,7 +18,7 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.firebase.client.Firebase;
-import com.mioffers.expandablelistview.entity.NavItem;
+import com.mioffers.MiOffers.entity.NavItem;
 
 import java.util.ArrayList;
 import java.util.HashMap;

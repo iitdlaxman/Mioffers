@@ -1,6 +1,6 @@
-package com.mioffers.expandablelistview;
+package com.mioffers.MiOffers;
 
-import com.mioffers.expandablelistview.entity.NavItem;
+import com.mioffers.MiOffers.entity.NavItem;
 
 import java.util.ArrayList;
 

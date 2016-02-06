@@ -1,4 +1,4 @@
-package com.mioffers.expandablelistview;
+package com.mioffers.MiOffers;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,7 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.mioffers.expandablelistview.entity.NavItem;
+import com.mioffers.MiOffers.entity.NavItem;
 
 import java.util.ArrayList;
 

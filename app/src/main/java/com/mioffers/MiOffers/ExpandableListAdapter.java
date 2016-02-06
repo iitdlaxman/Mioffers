@@ -1,4 +1,4 @@
-package com.mioffers.expandablelistview;
+package com.mioffers.MiOffers;
 
 import android.content.Context;
 import android.graphics.Typeface;

@@ -1,4 +1,4 @@
-package com.mioffers.expandablelistview.entity;
+package com.mioffers.MiOffers.entity;
 
 /**
  * Created by laxman.muttineni on 02/02/16.

@@ -1,4 +1,4 @@
-package com.mioffers.expandablelistview;
+package com.mioffers.MiOffers;
 
 /**
  * Created by laxman.muttineni on 03/02/16.

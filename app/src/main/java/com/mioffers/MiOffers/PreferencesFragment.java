@@ -1,4 +1,4 @@
-package com.mioffers.expandablelistview;
+package com.mioffers.MiOffers;
 
 import android.app.Fragment;
 import android.os.Bundle;
