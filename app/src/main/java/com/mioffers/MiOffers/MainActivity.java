@@ -41,6 +41,8 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<NavItem> mNavItems;
 
 
+    GPSTracker gps;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,6 +67,15 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+        gps= new GPSTracker(MainActivity.this);
+        if(gps.canGetLocation){
+            double latitude = gps.getLatitude();
+            double longitude = gps.getLongtitude();
+            Toast.makeText(getApplicationContext() , "your location lat :"  + latitude + " long : " + longitude, Toast.LENGTH_LONG).show();
+        }
+        else {
+            gps.showSettingsAlert();
+        }
 
 
         //android.support.v7.app.ActionBar actionBar = getSupportActionBar();
