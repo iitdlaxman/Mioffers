@@ -6,7 +6,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.mioffers.MiOffers.entity.ExpandableParentItem;
+import com.mioffers.MiOffers.entity.ListItem;
 
 import java.util.HashMap;
 import java.util.List;
@@ -21,12 +26,14 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter{
     private List<String> _listDataHeader; // header titles
     // child data in format of header title, child title
     private HashMap<String, List<String>> _listDataChild;
+    private String expandableType = "OFFER";
 
     public ExpandableListAdapter(Context context, List<String> listDataHeader,
-                                 HashMap<String, List<String>> listChildData) {
+                                 HashMap<String, List<String>> listChildData, String expandableType) {
         this._context = context;
         this._listDataHeader = listDataHeader;
         this._listDataChild = listChildData;
+        this.expandableType = expandableType;
     }
 
     @Override
@@ -46,6 +53,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter{
 
         final String childText = (String) getChild(groupPosition, childPosition);
 
+
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this._context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -55,6 +63,21 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter{
         TextView txtListChild = (TextView) convertView
                 .findViewById(R.id.description);
         txtListChild.setText(childText);
+        txtListChild.setHighlightColor(12);
+        Button reminderButton = (Button) convertView.findViewById(R.id.reminder);
+        reminderButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Reminder.putReminder("1", "2", MainActivity.firebaseRef);  //todo : uniqueId for each user, offer
+            }
+        });
+        if(this.expandableType.equalsIgnoreCase("reminder")){
+            reminderButton.setVisibility(View.GONE);
+            Button shareButton = (Button) convertView.findViewById(R.id.share);
+            shareButton.setVisibility(View.GONE);
+            Button mapButton = (Button) convertView.findViewById(R.id.mapLocation);
+            mapButton.setVisibility(View.GONE);
+        }
         return convertView;
     }
 

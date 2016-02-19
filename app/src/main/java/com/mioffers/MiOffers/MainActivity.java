@@ -2,11 +2,15 @@ package com.mioffers.MiOffers;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,6 +22,11 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.firebase.client.Firebase;
+import com.google.android.gms.maps.*;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.mioffers.MiOffers.entity.ExpandableParentItem;
 import com.mioffers.MiOffers.entity.NavItem;
 
 import java.util.ArrayList;
@@ -26,10 +35,6 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    ExpandableListAdapter listAdapter;
-    ExpandableListView expListView;
-    List<String> listDataHeader;
-    HashMap<String, List<String>> listDataChild;
     Button reminderButton;
     private Reminder reminder=new Reminder();
 
@@ -39,22 +44,36 @@ public class MainActivity extends AppCompatActivity {
     private RelativeLayout mDrawerPane;
     private String mActivityTitle;
     ArrayList<NavItem> mNavItems;
-
+    private int content;
+    public static  Firebase firebaseRef;
+    public static String UserId = "1";
+    public static ExpandableListView expandableListView;
+    public static List<ExpandableParentItem> offersExpandableData = new ArrayList<>();
+    public static List<ExpandableParentItem> remindersExpandableData = new ArrayList<>();
+    public static View remindersFragmentView;
+    public static Context context;
+    public static android.support.v4.app.FragmentManager supportMapFragment;
 
     GPSTracker gps;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         Firebase.setAndroidContext(this);
-        final Firebase firebaseRef = new Firebase("https://mioffers.firebaseIO.com/");
+        firebaseRef = new Firebase("https://mioffers.firebaseIO.com");
+
+        prepareListData();
+        context= getApplicationContext();
 
         setContentView(R.layout.activity_main);
+       // selectItemFromDrawer(0);
         mNavItems = new GetNavItems().getNavItems();
         mActivityTitle = getTitle().toString();
         mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
         mDrawerList = (ListView)findViewById(R.id.navList);
+supportMapFragment = getSupportFragmentManager();
 
 
         addDrawerItems();
@@ -82,107 +101,24 @@ public class MainActivity extends AppCompatActivity {
         //getActionBar().setDisplayHomeAsUpEnabled(true);
         //getActionBar().setHomeButtonEnabled(true);
         //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        expandableListView = (ExpandableListView)findViewById(R.id.lvExp);
+        new ExpandableList(expandableListView, this , "OFFER",offersExpandableData);
+        content = R.layout.main_screen;
 
-
-
-        expListView = (ExpandableListView) findViewById(R.id.lvExp);
-        prepareListData();
-        listAdapter = new ExpandableListAdapter(this, listDataHeader, listDataChild);
-        expListView.setAdapter(listAdapter);
-
-        expListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
-
-            @Override
-            public boolean onGroupClick(ExpandableListView parent, View v,
-                                        int groupPosition, long id) {
-                Toast.makeText(getApplicationContext(),
-                        "Group Clicked " + listDataHeader.get(groupPosition),
-                        Toast.LENGTH_SHORT).show();
-                return false;
-            }
-        });
-
-        // Listview Group expanded listener
-        expListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
-
-            @Override
-            public void onGroupExpand(int groupPosition) {
-                Toast.makeText(getApplicationContext(),
-                        listDataHeader.get(groupPosition) + " Expanded",
-                        Toast.LENGTH_SHORT).show();
-                //TextView expList = (TextView) findViewById(R.id.lblListHeader2);
-                //expList.setVisibility(View.VISIBLE);
-            }
-        });
-
-        // Listview Group collasped listener
-        expListView.setOnGroupCollapseListener(new ExpandableListView.OnGroupCollapseListener() {
-
-            @Override
-            public void onGroupCollapse(int groupPosition) {
-                Toast.makeText(getApplicationContext(),
-                        listDataHeader.get(groupPosition) + " Collapsed",
-                        Toast.LENGTH_SHORT).show();
-                //TextView expList = (TextView) findViewById(R.id.lblListHeader2);
-                //expList.setVisibility(View.GONE);
-
-
-            }
-        });
-
-        // Listview on child click listener
-        expListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
-
-            @Override
-            public boolean onChildClick(ExpandableListView parent, View v,
-                                        int groupPosition, int childPosition, long id) {
-                // TODO Auto-generated method stub
-                Toast.makeText(
-                        getApplicationContext(),
-                        listDataHeader.get(groupPosition)
-                                + " : "
-                                + listDataChild.get(
-                                listDataHeader.get(groupPosition)).get(
-                                childPosition), Toast.LENGTH_SHORT)
-                        .show();
-                return false;
-            }
-        });
         View inflater = getLayoutInflater().inflate(R.layout.list_item, null);
         reminderButton = (Button) inflater.findViewById(R.id.reminder);
         reminderButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(MainActivity.this, "Button Clicked", Toast.LENGTH_SHORT).show();
-                reminder.putReminder("10", "2", firebaseRef);  //todo : uniqueId for each user, offer
+                Reminder.putReminder("1", "2", firebaseRef);  //todo : uniqueId for each user, offer
             }
         });
 
+
+
     }
 
-    private void prepareListData() {
-        listDataHeader = new ArrayList<String>();
-        listDataChild = new HashMap<String, List<String>>();
-
-        // Adding child data
-        listDataHeader.add("OFFER1");
-        listDataHeader.add("OFFER2");
-        listDataHeader.add("OFFER3");
-
-        // Adding child data
-        List<String> top250 = new ArrayList<String>();
-        top250.add("offer1 descabkcb kbdvk jkbvka b avbdvk kdva k kjdavs k bkdsvb k vaksbj");
-
-        List<String> nowShowing = new ArrayList<String>();
-        nowShowing.add("offer2  sdhkhaksd hadks kjds k khsdh k sdkj kjhds k dksajh ksd kjsd kj sdkhj");
-
-        List<String> comingSoon = new ArrayList<String>();
-        comingSoon.add("offer3 bvks ksbv ak sjvdbk skjv jkdsbvkv bkv kjsdvb ksvbks vkdsvb kdsv dskvbskdv");
-
-        listDataChild.put(listDataHeader.get(0), top250); // Header, Child data
-        listDataChild.put(listDataHeader.get(1), nowShowing);
-        listDataChild.put(listDataHeader.get(2), comingSoon);
-    }
 
     private void addDrawerItems() {
         DrawerListAdapter adapter = new DrawerListAdapter(this, mNavItems);
@@ -193,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Toast.makeText(MainActivity.this, "Time for an upgrade!", Toast.LENGTH_SHORT).show();
-                //selectItemFromDrawer(position);
+                selectItemFromDrawer(position);
             }
         });
     }
@@ -203,13 +139,20 @@ public class MainActivity extends AppCompatActivity {
 * is selected.
 * */
     private void selectItemFromDrawer(int position) {
-        Fragment fragment = new PreferencesFragment();
+        Fragment fragment;
+        if(position == 1){
+
+            fragment = new RemindersFragment();
+        }
+        else{
+            fragment = new com.mioffers.MiOffers.MapFragment();
+        }
 
         FragmentManager fragmentManager = getFragmentManager();
-        fragmentManager.beginTransaction()
-                .replace(R.id.lvExp, fragment)
-                .commit();
-
+        android.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.your_placeholder, fragment);
+        fragmentTransaction.addToBackStack("last");
+        fragmentTransaction.commit();
         mDrawerList.setItemChecked(position, true);
         setTitle(mNavItems.get(position).mTitle);
 
@@ -290,6 +233,23 @@ public class MainActivity extends AppCompatActivity {
         boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
        // menu.findItem(R.id.action_search).setVisible(!drawerOpen);
         return super.onPrepareOptionsMenu(menu);
+    }
+
+
+
+    private void prepareListData() {
+        ExpandableParentItem expandableParentItem1 = new ExpandableParentItem();
+        ExpandableParentItem expandableParentItem2 = new ExpandableParentItem();
+        ExpandableParentItem expandableParentItem3 = new ExpandableParentItem();
+        expandableParentItem1.setTitle("OFFER1");
+        expandableParentItem2.setTitle("OFFER2");
+        expandableParentItem3.setTitle("OFFER3");
+        expandableParentItem1.setDescription("offer1 descabkcb kbdvk jkbvka b avbdvk kdva k kjdavs k bkdsvb k vaksbj");
+        expandableParentItem2.setDescription("offer2  sdhkhaksd hadks kjds k khsdh k sdkj kjhds k dksajh ksd kjsd kj sdkhj");
+        expandableParentItem3.setDescription("offer3 bvks ksbv ak sjvdbk skjv jkdsbvkv bkv kjsdvb ksvbks vkdsvb kdsv dskvbskdv");
+        MainActivity.offersExpandableData.add(expandableParentItem1);
+        MainActivity.offersExpandableData.add(expandableParentItem2);
+        MainActivity.offersExpandableData.add(expandableParentItem3);
     }
 
 

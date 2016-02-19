@@ -8,8 +8,14 @@ android:layout_height="match_parent"
 android:fitsSystemWindows="true">
 
 
+    <include layout="@layout/main_screen"/>
+
 <!-- The first child in the layout is for the main Activity UI-->
-    <include layout="@layout/main_screen" />
+    <FrameLayout
+        android:id="@+id/your_placeholder"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </FrameLayout>
 
     <!-- The navigation drawer -->
     <RelativeLayout
