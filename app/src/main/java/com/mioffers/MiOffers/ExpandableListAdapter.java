@@ -8,10 +8,6 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.mioffers.MiOffers.entity.ExpandableParentItem;
-import com.mioffers.MiOffers.entity.ListItem;
 
 import java.util.HashMap;
 import java.util.List;
@@ -65,15 +61,22 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter{
         txtListChild.setText(childText);
         txtListChild.setHighlightColor(12);
         Button reminderButton = (Button) convertView.findViewById(R.id.reminder);
+        Button shareButton = (Button) convertView.findViewById(R.id.share);
         reminderButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Reminder.putReminder("1", "2", MainActivity.firebaseRef);  //todo : uniqueId for each user, offer
             }
         });
+
+        shareButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
         if(this.expandableType.equalsIgnoreCase("reminder")){
             reminderButton.setVisibility(View.GONE);
-            Button shareButton = (Button) convertView.findViewById(R.id.share);
             shareButton.setVisibility(View.GONE);
             Button mapButton = (Button) convertView.findViewById(R.id.mapLocation);
             mapButton.setVisibility(View.GONE);

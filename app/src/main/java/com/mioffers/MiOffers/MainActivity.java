@@ -1,16 +1,14 @@
 package com.mioffers.MiOffers;
 
+import android.app.ActionBar;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.provider.Settings;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,14 +21,10 @@ import android.widget.Toast;
 
 import com.firebase.client.Firebase;
 import com.google.android.gms.maps.*;
-import com.google.android.gms.maps.MapFragment;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.mioffers.MiOffers.entity.ExpandableParentItem;
 import com.mioffers.MiOffers.entity.NavItem;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -52,14 +46,23 @@ public class MainActivity extends AppCompatActivity {
     public static List<ExpandableParentItem> remindersExpandableData = new ArrayList<>();
     public static View remindersFragmentView;
     public static Context context;
+
+
+
+    public static GoogleMap mMap;
+    public static View mapView;
     public static android.support.v4.app.FragmentManager supportMapFragment;
 
-    GPSTracker gps;
+
+   public static GPSTracker gps;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+        supportMapFragment = getSupportFragmentManager();
 
         Firebase.setAndroidContext(this);
         firebaseRef = new Firebase("https://mioffers.firebaseIO.com");
@@ -73,7 +76,8 @@ public class MainActivity extends AppCompatActivity {
         mActivityTitle = getTitle().toString();
         mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
         mDrawerList = (ListView)findViewById(R.id.navList);
-supportMapFragment = getSupportFragmentManager();
+
+
 
 
         addDrawerItems();
@@ -97,10 +101,16 @@ supportMapFragment = getSupportFragmentManager();
         }
 
 
-        //android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+        ActionBar actionBar1  = getActionBar();
         //getActionBar().setDisplayHomeAsUpEnabled(true);
         //getActionBar().setHomeButtonEnabled(true);
-        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+
+
+
+
         expandableListView = (ExpandableListView)findViewById(R.id.lvExp);
         new ExpandableList(expandableListView, this , "OFFER",offersExpandableData);
         content = R.layout.main_screen;
@@ -118,6 +128,7 @@ supportMapFragment = getSupportFragmentManager();
 
 
     }
+
 
 
     private void addDrawerItems() {
@@ -138,14 +149,14 @@ supportMapFragment = getSupportFragmentManager();
 * Called when a particular item from the navigation drawer
 * is selected.
 * */
-    private void selectItemFromDrawer(int position) {
+    public void selectItemFromDrawer(int position) {
         Fragment fragment;
         if(position == 1){
 
             fragment = new RemindersFragment();
         }
         else{
-            fragment = new com.mioffers.MiOffers.MapFragment();
+            fragment = new ShowMapFragment();
         }
 
         FragmentManager fragmentManager = getFragmentManager();
@@ -251,6 +262,7 @@ supportMapFragment = getSupportFragmentManager();
         MainActivity.offersExpandableData.add(expandableParentItem2);
         MainActivity.offersExpandableData.add(expandableParentItem3);
     }
+
 
 
 }

@@ -1,9 +1,7 @@
 package com.mioffers.MiOffers;
 
 import android.app.Fragment;
-import android.content.ContentResolver;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,11 +14,6 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 import com.mioffers.MiOffers.entity.ExpandableParentItem;
 
-import junit.framework.Assert;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**

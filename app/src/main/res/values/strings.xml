@@ -7,7 +7,8 @@
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
     <string name="hello_blank_fragment">blank fragment</string>
-    <string name="google_maps_key"
-        templateMergeStrategy="preserve">AIzaSyCApxjrctzXjwOXo8r3EFeIsjcdpedqXBo</string>
+    <string name="google_maps_key" translatable="false" templateMergeStrategy="preserve">
+        AIzaSyANoTZLZo9RBoHhFfvnlDUS4iOlchsoUHM
+    </string>
 
 </resources>
