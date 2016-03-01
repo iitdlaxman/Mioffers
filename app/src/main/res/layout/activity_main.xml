@@ -8,7 +8,6 @@ android:layout_height="match_parent"
 android:fitsSystemWindows="true">
 
 
-    <include layout="@layout/main_screen"/>
 
 <!-- The first child in the layout is for the main Activity UI-->
     <FrameLayout

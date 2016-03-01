@@ -109,10 +109,7 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setHomeButtonEnabled(true);
 
 
-
-
-        expandableListView = (ExpandableListView)findViewById(R.id.lvExp);
-        new ExpandableList(expandableListView, this , "OFFER",offersExpandableData);
+        selectItemFromDrawer(0);
         content = R.layout.main_screen;
 
         View inflater = getLayoutInflater().inflate(R.layout.list_item, null);
