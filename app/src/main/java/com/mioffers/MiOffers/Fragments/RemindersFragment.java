@@ -1,4 +1,4 @@
-package com.mioffers.MiOffers;
+package com.mioffers.MiOffers.Fragments;
 
 import android.app.Fragment;
 import android.os.Bundle;
@@ -12,6 +12,9 @@ import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
+import com.mioffers.MiOffers.ExpandableList;
+import com.mioffers.MiOffers.MainActivity;
+import com.mioffers.MiOffers.R;
 import com.mioffers.MiOffers.entity.ExpandableParentItem;
 
 import java.util.Map;

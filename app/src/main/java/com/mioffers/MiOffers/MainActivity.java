@@ -1,6 +1,5 @@
 package com.mioffers.MiOffers;
 
-import android.app.ActionBar;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
@@ -21,6 +20,10 @@ import android.widget.Toast;
 
 import com.firebase.client.Firebase;
 import com.google.android.gms.maps.*;
+import com.mioffers.MiOffers.Fragments.ExpandableFragment;
+import com.mioffers.MiOffers.Fragments.PostFragment;
+import com.mioffers.MiOffers.Fragments.RemindersFragment;
+import com.mioffers.MiOffers.Fragments.ShowMapFragment;
 import com.mioffers.MiOffers.entity.ExpandableParentItem;
 import com.mioffers.MiOffers.entity.NavItem;
 
@@ -42,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
     public static  Firebase firebaseRef;
     public static String UserId = "1";
     public static ExpandableListView expandableListView;
+    public static View expandableFragmentView;
     public static List<ExpandableParentItem> offersExpandableData = new ArrayList<>();
     public static List<ExpandableParentItem> remindersExpandableData = new ArrayList<>();
     public static View remindersFragmentView;
@@ -101,10 +105,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
-        ActionBar actionBar1  = getActionBar();
-        //getActionBar().setDisplayHomeAsUpEnabled(true);
-        //getActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
@@ -151,9 +151,18 @@ public class MainActivity extends AppCompatActivity {
 * */
     public void selectItemFromDrawer(int position) {
         Fragment fragment;
-        if(position == 1){
+
+        if(position == 0) {
+            fragment = new ExpandableFragment();
+        }
+
+        else if(position == 1){
 
             fragment = new RemindersFragment();
+        }
+        else if(position == 7){
+
+            fragment = new PostFragment();
         }
         else{
             fragment = new ShowMapFragment();
@@ -179,14 +188,14 @@ public class MainActivity extends AppCompatActivity {
             /** Called when a drawer has settled in a completely open state. */
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
-                //getSupportActionBar().setTitle("Navigation!");
+                getSupportActionBar().setTitle("Navigation!");
                 invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
             }
 
             /** Called when a drawer has settled in a completely closed state. */
             public void onDrawerClosed(View view) {
                 super.onDrawerClosed(view);
-                //getSupportActionBar().setTitle(mActivityTitle);
+                getSupportActionBar().setTitle(mActivityTitle);
                 invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
             }
         };
@@ -241,7 +250,13 @@ public class MainActivity extends AppCompatActivity {
 
     public boolean onPrepareOptionsMenu(Menu menu) {
         // If the nav drawer is open, hide action items related to the content view
-        boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
+        try{
+            mDrawerLayout.isDrawerOpen(mDrawerList);
+        }
+        catch (Exception e){
+            System.out.print(e);
+        }
+
        // menu.findItem(R.id.action_search).setVisible(!drawerOpen);
         return super.onPrepareOptionsMenu(menu);
     }
