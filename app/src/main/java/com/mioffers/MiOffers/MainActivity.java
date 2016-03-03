@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
     Button reminderButton;
     private Reminder reminder=new Reminder();
 
-    private ListView mDrawerList;
+    public static ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
     private DrawerLayout mDrawerLayout;
     private RelativeLayout mDrawerPane;
@@ -50,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
     public static List<ExpandableParentItem> remindersExpandableData = new ArrayList<>();
     public static View remindersFragmentView;
     public static Context context;
+    public static FragmentManager fragmentManager;
 
 
 
@@ -67,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         supportMapFragment = getSupportFragmentManager();
-
+        fragmentManager = getFragmentManager();
         Firebase.setAndroidContext(this);
         firebaseRef = new Firebase("https://mioffers.firebaseIO.com");
 
@@ -103,7 +104,6 @@ public class MainActivity extends AppCompatActivity {
         else {
             gps.showSettingsAlert();
         }
-
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
@@ -142,39 +142,77 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+
+
+
+    public void setDrawerState(boolean isEnabled) {
+        if ( isEnabled ) {
+            mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+            //mDrawerToggle.onDrawerStateChanged(DrawerLayout.LOCK_MODE_UNLOCKED);
+            mDrawerToggle.setDrawerIndicatorEnabled(true);
+            mDrawerToggle.syncState();
+
+        }
+        else {
+            mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+           // mDrawerToggle.onDrawerStateChanged(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+            mDrawerToggle.setDrawerIndicatorEnabled(false);
+            mDrawerToggle.syncState();
+        }
+    }
+
+
+
+
+
     /*
 * Called when a particular item from the navigation drawer
 * is selected.
 * */
     public void selectItemFromDrawer(int position) {
         Fragment fragment;
-
+        android.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         if(position == 0) {
             fragment = new ExpandableFragment();
+            setDrawerState(true);
         }
 
         else if(position == 1){
 
             fragment = new RemindersFragment();
+           // fragmentTransaction.replace(R.id.your_placeholder, fragment);
+            setDrawerState(false);
         }
         else if(position == 7){
 
             fragment = new PostFragment();
+           // fragmentTransaction.replace(R.id.your_placeholder, fragment); //todo : shows background
+            setDrawerState(false);
         }
         else{
             fragment = new ShowMapFragment();
+            //fragmentTransaction.replace(R.id.your_placeholder, fragment);
+            setDrawerState(false);
         }
 
-        FragmentManager fragmentManager = getFragmentManager();
-        android.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.your_placeholder, fragment);
-        fragmentTransaction.addToBackStack("last");
+
+
+        fragmentTransaction.replace(R.id.your_placeholder, fragment).addToBackStack(String.valueOf(position));
         fragmentTransaction.commit();
         mDrawerList.setItemChecked(position, true);
         setTitle(mNavItems.get(position).mTitle);
 
+
         // Close the drawer
         mDrawerLayout.closeDrawer(mDrawerPane);
+
+
+        /*mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+        mDrawerToggle.setDrawerIndicatorEnabled(false);
+        mDrawerToggle.syncState();
+        getSupportActionBar().setHomeButtonEnabled(false);
+*/
+
     }
 
 
@@ -242,6 +280,8 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
 
+        setDrawerState(true);
+        selectItemFromDrawer(0);
         return super.onOptionsItemSelected(item);
     }
 
@@ -273,6 +313,16 @@ public class MainActivity extends AppCompatActivity {
         MainActivity.offersExpandableData.add(expandableParentItem1);
         MainActivity.offersExpandableData.add(expandableParentItem2);
         MainActivity.offersExpandableData.add(expandableParentItem3);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (fragmentManager.getBackStackEntryCount() <= 1) {
+            finish();
+
+            return;
+        }
+        super.onBackPressed();
     }
 
 

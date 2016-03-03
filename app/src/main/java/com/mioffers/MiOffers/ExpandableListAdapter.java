@@ -1,5 +1,6 @@
 package com.mioffers.MiOffers;
 
+import android.app.Fragment;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
@@ -8,6 +9,8 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
 import android.widget.TextView;
+
+import com.mioffers.MiOffers.Fragments.ShowMapFragment;
 
 import java.util.HashMap;
 import java.util.List;
@@ -62,6 +65,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter{
         txtListChild.setHighlightColor(12);
         Button reminderButton = (Button) convertView.findViewById(R.id.reminder);
         Button shareButton = (Button) convertView.findViewById(R.id.share);
+        Button mapButton = (Button) convertView.findViewById(R.id.mapLocation);
         reminderButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -69,16 +73,19 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter{
             }
         });
 
-        shareButton.setOnClickListener(new View.OnClickListener() {
+        mapButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Fragment fragment = new ShowMapFragment();
+                android.app.FragmentTransaction fragmentTransaction = MainActivity.fragmentManager.beginTransaction();
+                fragmentTransaction.add(R.id.your_placeholder, fragment);
+                fragmentTransaction.addToBackStack("last");
+                fragmentTransaction.commit();
             }
         });
         if(this.expandableType.equalsIgnoreCase("reminder")){
             reminderButton.setVisibility(View.GONE);
             shareButton.setVisibility(View.GONE);
-            Button mapButton = (Button) convertView.findViewById(R.id.mapLocation);
             mapButton.setVisibility(View.GONE);
         }
         return convertView;

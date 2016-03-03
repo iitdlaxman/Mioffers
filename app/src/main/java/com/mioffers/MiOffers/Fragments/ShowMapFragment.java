@@ -39,6 +39,7 @@ public class ShowMapFragment extends Fragment implements OnMapReadyCallback {
         SupportMapFragment mapFragment = (SupportMapFragment) MainActivity.supportMapFragment
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        getActivity().setTitle("MAP");
 
         return MainActivity.mapView;
     }
