@@ -9,4 +9,8 @@ public class Reminder {
     public static void putReminder(String userId, String offerId,Firebase firebaseRef){
         firebaseRef.child("ACC").child(userId).child("reminders").push().setValue(offerId);
     }
+
+    public static void removeReminder(String userId, String offerId,Firebase firebaseRef){
+        firebaseRef.child("ACC").child(userId).child("reminders").child(offerId).removeValue();
+    }
 }

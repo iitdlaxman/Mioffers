@@ -47,11 +47,22 @@ public class ShowMapFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onMapReady(GoogleMap googleMap) {
         MainActivity.mMap = googleMap;
-
+        googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         // Add a marker in Sydney and move the camera
         LatLng sydney = new LatLng(-34, 151);
-        MainActivity.mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        MainActivity.mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        //MainActivity.mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
+        //MainActivity.mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        try{
+            MainActivity.mMap.setMyLocationEnabled(true);
+            LatLng my = new LatLng(MainActivity.gps.getLatitude(), MainActivity.gps.getLongtitude());
+            MainActivity.mMap.addMarker(new MarkerOptions().position(my).title("Your Location"));
+            MainActivity.mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(my, 4));
+
+        }
+        catch (Exception e){
+
+        }
+
     }
 
 }

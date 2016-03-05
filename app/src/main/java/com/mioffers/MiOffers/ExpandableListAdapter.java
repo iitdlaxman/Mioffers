@@ -69,7 +69,10 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter{
         reminderButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Reminder.putReminder("1", "2", MainActivity.firebaseRef);  //todo : uniqueId for each user, offer
+                View parent= (View) v.getParent();
+                View parentofp= (View) parent.getParent();
+
+                //Reminder.putReminder(MainActivity.UserId, "2", MainActivity.firebaseRef);  //todo : uniqueId for each user, offer
             }
         });
 

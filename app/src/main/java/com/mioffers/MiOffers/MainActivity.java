@@ -1,13 +1,22 @@
 package com.mioffers.MiOffers;
 
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.drawable.ColorDrawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,6 +29,7 @@ import android.widget.Toast;
 
 import com.firebase.client.Firebase;
 import com.google.android.gms.maps.*;
+import com.mioffers.MiOffers.Connectivity.NetConnection;
 import com.mioffers.MiOffers.Fragments.ExpandableFragment;
 import com.mioffers.MiOffers.Fragments.PostFragment;
 import com.mioffers.MiOffers.Fragments.RemindersFragment;
@@ -43,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<NavItem> mNavItems;
     private int content;
     public static  Firebase firebaseRef;
-    public static String UserId = "1";
+    public static String UserId;
     public static ExpandableListView expandableListView;
     public static View expandableFragmentView;
     public static List<ExpandableParentItem> offersExpandableData = new ArrayList<>();
@@ -51,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
     public static View remindersFragmentView;
     public static Context context;
     public static FragmentManager fragmentManager;
+    public static ArrayList reminderMsgIds = new ArrayList<String>();
 
 
 
@@ -66,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
+        UserId = Settings.Secure.getString(getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
         supportMapFragment = getSupportFragmentManager();
         fragmentManager = getFragmentManager();
         Firebase.setAndroidContext(this);
@@ -76,6 +87,41 @@ public class MainActivity extends AppCompatActivity {
         context= getApplicationContext();
 
         setContentView(R.layout.activity_main);
+
+
+        if (!NetConnection.isOnline(getSystemService(Context.CONNECTIVITY_SERVICE)))
+        {
+            NetConnection.showNoConnectionDialog(this);
+        }
+
+
+       /* Thread welcomeThread = new Thread() {
+
+            @Override
+            public void run() {
+                try {
+                    super.run();
+                    sleep(10000) ; //Delay of 10 seconds
+                } catch (Exception e) {
+
+                } finally {
+
+                    Intent i = new Intent(context,
+                            MainActivity.class);
+                    startActivity(i);
+                    finish();
+                }
+            }
+        };
+        welcomeThread.start();
+
+
+*/
+
+
+
+
+
        // selectItemFromDrawer(0);
         mNavItems = new GetNavItems().getNavItems();
         mActivityTitle = getTitle().toString();
@@ -105,15 +151,23 @@ public class MainActivity extends AppCompatActivity {
             gps.showSettingsAlert();
         }
 
+
+        getSupportActionBar().setDisplayOptions((ActionBar.DISPLAY_SHOW_CUSTOM));
+        getSupportActionBar().setCustomView(R.layout.action_bar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xd0000000));
+
+        for (int i = 0 ; i< mNavItems.size() ; i++){
+            selectItemFromDrawer(i);
+        }
 
         selectItemFromDrawer(0);
         content = R.layout.main_screen;
 
         View inflater = getLayoutInflater().inflate(R.layout.list_item, null);
-        reminderButton = (Button) inflater.findViewById(R.id.reminder);
+        /*reminderButton = (Button) inflater.findViewById(R.id.reminder);
         reminderButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -121,7 +175,7 @@ public class MainActivity extends AppCompatActivity {
                 Reminder.putReminder("1", "2", firebaseRef);  //todo : uniqueId for each user, offer
             }
         });
-
+*/
 
 
     }
@@ -160,9 +214,6 @@ public class MainActivity extends AppCompatActivity {
             mDrawerToggle.syncState();
         }
     }
-
-
-
 
 
     /*

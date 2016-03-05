@@ -1,13 +1,17 @@
 package com.mioffers.MiOffers.entity;
 
+import com.google.android.gms.maps.model.LatLng;
+
 /**
  * Created by laxman.muttineni on 15/02/16.
  */
 public class ExpandableParentItem {
+    public String id;
     public String company;
     public String title;
     public String description;
     public String validity;
+    public LatLng latLng;
 
     public String getCompany() {
         return company;
@@ -39,5 +43,21 @@ public class ExpandableParentItem {
 
     public void setValidity(String validity) {
         this.validity = validity;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public LatLng getLatLng() {
+        return latLng;
+    }
+
+    public void setLatLng(LatLng latLng) {
+        this.latLng = latLng;
     }
 }

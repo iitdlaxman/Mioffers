@@ -12,6 +12,7 @@ import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
+import com.google.android.gms.maps.model.LatLng;
 import com.mioffers.MiOffers.ExpandableList;
 import com.mioffers.MiOffers.MainActivity;
 import com.mioffers.MiOffers.R;
@@ -36,7 +37,6 @@ public class RemindersFragment extends Fragment {
 
 
 
-        //String androidId = Settings.Secure.getString(getContext().getContentResolver(), Settings.Secure.ANDROID_ID);
         MainActivity.firebaseRef.child("ACC").child(MainActivity.UserId).child("reminders").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -55,6 +55,10 @@ public class RemindersFragment extends Fragment {
                             ex.setDescription(msgData.get("description"));
                             ex.setTitle(msgData.get("title"));
                             ex.setValidity(msgData.get("validity"));
+                            ex.setId(msgId);
+                            //LatLng latLng = new LatLng(Double.valueOf(msgData.get("lat")),Double.valueOf(msgData.get("long")));
+                            //ex.setLatLng(latLng);
+                            MainActivity.reminderMsgIds.add(msgId);
                             MainActivity.remindersExpandableData.add(ex);
 
                             ExpandableListView expandableListView = (ExpandableListView)MainActivity.remindersFragmentView.findViewById(R.id.lvExp);
