@@ -12,9 +12,10 @@ import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
-import com.google.android.gms.maps.model.LatLng;
-import com.mioffers.MiOffers.ExpandableList;
+import com.mioffers.MiOffers.Constants;
+import com.mioffers.MiOffers.ExpandableList.ExpandableList;
 import com.mioffers.MiOffers.MainActivity;
+import com.mioffers.MiOffers.Mappers;
 import com.mioffers.MiOffers.R;
 import com.mioffers.MiOffers.entity.ExpandableParentItem;
 
@@ -37,32 +38,20 @@ public class RemindersFragment extends Fragment {
 
 
 
-        MainActivity.firebaseRef.child("ACC").child(MainActivity.UserId).child("reminders").addChildEventListener(new ChildEventListener() {
+        MainActivity.firebaseRef.child(Constants.fireBaseChildAcc).child(MainActivity.UserId).child(Constants.fireBaseChildreminders).addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 
                 try{
                     final String msgId =  dataSnapshot.getValue().toString();
-                    MainActivity.firebaseRef.child("MSG").child(msgId).addValueEventListener(new ValueEventListener() {
+                    MainActivity.firebaseRef.child(Constants.fireBaseChildMsg).child(msgId).addValueEventListener(new ValueEventListener() {
 
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
-                            dataSnapshot.getValue();
-                            System.out.println(dataSnapshot.getValue());
-                            Map<String, String> msgData = (Map<String, String>) dataSnapshot.getValue();
-                            ExpandableParentItem ex= new ExpandableParentItem();
-                            ex.setCompany(msgData.get("company"));
-                            ex.setDescription(msgData.get("description"));
-                            ex.setTitle(msgData.get("title"));
-                            ex.setValidity(msgData.get("validity"));
-                            ex.setId(msgId);
-                            //LatLng latLng = new LatLng(Double.valueOf(msgData.get("lat")),Double.valueOf(msgData.get("long")));
-                            //ex.setLatLng(latLng);
                             MainActivity.reminderMsgIds.add(msgId);
-                            MainActivity.remindersExpandableData.add(ex);
-
+                            MainActivity.remindersExpandableData.add(Mappers.mapMsgDataToExpandableParent(dataSnapshot));
                             ExpandableListView expandableListView = (ExpandableListView)MainActivity.remindersFragmentView.findViewById(R.id.lvExp);
-                            new ExpandableList(expandableListView, MainActivity.context ,"REMINDER", MainActivity.remindersExpandableData);
+                            new ExpandableList(expandableListView, MainActivity.context ,Constants.REMINDER, MainActivity.remindersExpandableData);
 
                         }
                         @Override
@@ -97,11 +86,10 @@ public class RemindersFragment extends Fragment {
             }
         });
 
-        View rootView = inflater.inflate(R.layout.main_screen, container, false);
-        ExpandableListView expandableListView = (ExpandableListView)rootView.findViewById(R.id.lvExp);
-        new ExpandableList(expandableListView, container.getContext(),"REMINDER", MainActivity.remindersExpandableData);
-        MainActivity.remindersFragmentView = rootView;
-        return rootView;
+        MainActivity.remindersFragmentView = inflater.inflate(R.layout.main_screen, container, false);
+        ExpandableListView expandableListView = (ExpandableListView)MainActivity.remindersFragmentView.findViewById(R.id.lvExp);
+        new ExpandableList(expandableListView, container.getContext(), Constants.REMINDER, MainActivity.remindersExpandableData);
+        return MainActivity.remindersFragmentView;
     }
 
 

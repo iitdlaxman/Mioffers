@@ -1,4 +1,4 @@
-package com.mioffers.MiOffers;
+package com.mioffers.MiOffers.ExpandableList;
 
 import android.app.Fragment;
 import android.content.Context;
@@ -10,7 +10,11 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.mioffers.MiOffers.Constants;
 import com.mioffers.MiOffers.Fragments.ShowMapFragment;
+import com.mioffers.MiOffers.MainActivity;
+import com.mioffers.MiOffers.R;
+import com.mioffers.MiOffers.entity.ExpandableParentItem;
 
 import java.util.HashMap;
 import java.util.List;
@@ -119,7 +123,23 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter{
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded,
                              View convertView, ViewGroup parent) {
-        String headerTitle = (String) getGroup(groupPosition);
+        String msgId = (String) getGroup(groupPosition);
+        ExpandableParentItem selectedOffer = new ExpandableParentItem();
+        if( this.expandableType == Constants.OFFER ) {
+            for(ExpandableParentItem expandableParentItem : MainActivity.offersExpandableData) {
+                if(expandableParentItem.getId().equals(msgId)) {
+                    selectedOffer = expandableParentItem;
+                }
+            }
+        }
+        else {
+            for(ExpandableParentItem expandableParentItem : MainActivity.remindersExpandableData) {
+                if(expandableParentItem.getId().equals(msgId)) {
+                    selectedOffer = expandableParentItem;
+                }
+            }
+        }
+
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this._context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -129,15 +149,15 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter{
         TextView lblListHeader = (TextView) convertView
                 .findViewById(R.id.offerTitle);
         lblListHeader.setTypeface(null, Typeface.BOLD);
-        lblListHeader.setText(headerTitle);
+        lblListHeader.setText(selectedOffer.getTitle());
         TextView lblListHeader2 = (TextView) convertView
                 .findViewById(R.id.companyName);
         lblListHeader2.setTypeface(null, Typeface.BOLD);
-        lblListHeader2.setText("MiOffers");
+        lblListHeader2.setText(selectedOffer.getCompany());
         TextView lblListHeader3 = (TextView) convertView
                 .findViewById(R.id.dateTime);
         lblListHeader3.setTypeface(null, Typeface.BOLD);
-        lblListHeader3.setText("12/12/12 12:00:00");
+        lblListHeader3.setText(selectedOffer.getValidity());
 
         return convertView;
     }

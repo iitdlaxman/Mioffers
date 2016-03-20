@@ -1,4 +1,4 @@
-package com.mioffers.MiOffers;
+package com.mioffers.MiOffers.ExpandableList;
 
 import android.content.Context;
 import android.view.View;
@@ -95,10 +95,10 @@ public class ExpandableList {
 
         // Adding child data
         for(ExpandableParentItem expandableParentItem : expandableParentItemList) {
-            listDataHeader.add(expandableParentItem.getTitle());
+            listDataHeader.add(expandableParentItem.getId());
             List<String> childData = new ArrayList<String>();
             childData.add(expandableParentItem.getDescription());
-            listDataChild.put(expandableParentItem.getTitle(), childData);
+            listDataChild.put(expandableParentItem.getId(), childData);
         }
     }
 

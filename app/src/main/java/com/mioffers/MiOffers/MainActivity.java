@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.drawable.ColorDrawable;
+import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -83,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
         Firebase.setAndroidContext(this);
         firebaseRef = new Firebase("https://mioffers.firebaseIO.com");
 
-        prepareListData();
+        //prepareListData();
         context= getApplicationContext();
 
         setContentView(R.layout.activity_main);
@@ -358,6 +359,9 @@ public class MainActivity extends AppCompatActivity {
         expandableParentItem1.setTitle("OFFER1");
         expandableParentItem2.setTitle("OFFER2");
         expandableParentItem3.setTitle("OFFER3");
+        expandableParentItem1.setId("1");
+        expandableParentItem2.setId("2");
+        expandableParentItem3.setId("3");
         expandableParentItem1.setDescription("offer1 descabkcb kbdvk jkbvka b avbdvk kdva k kjdavs k bkdsvb k vaksbj");
         expandableParentItem2.setDescription("offer2  sdhkhaksd hadks kjds k khsdh k sdkj kjhds k dksajh ksd kjsd kj sdkhj");
         expandableParentItem3.setDescription("offer3 bvks ksbv ak sjvdbk skjv jkdsbvkv bkv kjsdvb ksvbks vkdsvb kdsv dskvbskdv");
