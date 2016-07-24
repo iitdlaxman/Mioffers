@@ -1,4 +1,4 @@
-package com.mioffers.MiOffers;
+package com.mioffers.MiOffers.Connectivity;
 
 import android.app.AlertDialog;
 import android.app.Service;
@@ -21,7 +21,7 @@ public class GPSTracker extends Service implements LocationListener {
     private final Context context;
     boolean isGPSEnabled = false;
     boolean isNetworkEnabled = false;
-    boolean canGetLocation = false;
+    public boolean canGetLocation = false;
     Location location;
     double latitude;
     double langtitude;

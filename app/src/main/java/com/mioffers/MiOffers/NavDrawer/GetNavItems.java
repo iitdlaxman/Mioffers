@@ -1,6 +1,6 @@
-package com.mioffers.MiOffers;
+package com.mioffers.MiOffers.NavDrawer;
 
-import com.mioffers.MiOffers.entity.NavItem;
+import com.mioffers.MiOffers.R;
 
 import java.util.ArrayList;
 

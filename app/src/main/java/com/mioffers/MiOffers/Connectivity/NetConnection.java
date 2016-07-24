@@ -8,6 +8,8 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.provider.Settings;
 
+import com.mioffers.MiOffers.Constants;
+
 /**
  * Created by laxman.muttineni on 05/03/16.
  */
@@ -18,7 +20,7 @@ public class NetConnection {
         final Context ctx = ctx1;
         AlertDialog.Builder builder = new AlertDialog.Builder(ctx);
         builder.setCancelable(true);
-        builder.setMessage("You have no internet connection, Want to Turn on internet to load recent Offers ? ");
+        builder.setMessage(Constants.NO_INTERNET_MSG);
         builder.setTitle("No Internet connection.");
         builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which)

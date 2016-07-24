@@ -14,6 +14,7 @@ import com.mioffers.MiOffers.Constants;
 import com.mioffers.MiOffers.Fragments.ShowMapFragment;
 import com.mioffers.MiOffers.MainActivity;
 import com.mioffers.MiOffers.R;
+import com.mioffers.MiOffers.Reminder;
 import com.mioffers.MiOffers.entity.ExpandableParentItem;
 
 import java.util.HashMap;
@@ -57,6 +58,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter{
         final String childText = (String) getChild(groupPosition, childPosition);
 
 
+
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this._context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -75,8 +77,9 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter{
             public void onClick(View v) {
                 View parent= (View) v.getParent();
                 View parentofp= (View) parent.getParent();
+                final String msgId = (String) getGroup(parentofp.getVerticalScrollbarPosition()); //todo :check
 
-                //Reminder.putReminder(MainActivity.UserId, "2", MainActivity.firebaseRef);  //todo : uniqueId for each user, offer
+                Reminder.putReminder(MainActivity.UserId, msgId, MainActivity.firebaseRef);  //todo : uniqueId for each user, offer
             }
         });
 
@@ -92,8 +95,8 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter{
         });
         if(this.expandableType.equalsIgnoreCase("reminder")){
             reminderButton.setVisibility(View.GONE);
-            shareButton.setVisibility(View.GONE);
-            mapButton.setVisibility(View.GONE);
+            //shareButton.setVisibility(View.GONE);
+            //mapButton.setVisibility(View.GONE);
         }
         return convertView;
     }
@@ -125,7 +128,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter{
                              View convertView, ViewGroup parent) {
         String msgId = (String) getGroup(groupPosition);
         ExpandableParentItem selectedOffer = new ExpandableParentItem();
-        if( this.expandableType == Constants.OFFER ) {
+        if( this.expandableType.equalsIgnoreCase(Constants.OFFER)) {
             for(ExpandableParentItem expandableParentItem : MainActivity.offersExpandableData) {
                 if(expandableParentItem.getId().equals(msgId)) {
                     selectedOffer = expandableParentItem;

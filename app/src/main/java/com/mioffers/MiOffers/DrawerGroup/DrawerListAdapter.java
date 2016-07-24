@@ -1,4 +1,4 @@
-package com.mioffers.MiOffers;
+package com.mioffers.MiOffers.DrawerGroup;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,7 +8,8 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.mioffers.MiOffers.entity.NavItem;
+import com.mioffers.MiOffers.NavDrawer.NavItem;
+import com.mioffers.MiOffers.R;
 
 import java.util.ArrayList;
 

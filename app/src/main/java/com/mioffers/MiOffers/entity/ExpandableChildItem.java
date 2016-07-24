@@ -6,7 +6,7 @@ import android.widget.TextView;
 /**
  * Created by laxman.muttineni on 16/02/16.
  */
-public class ExpandableChileItem {
+public class ExpandableChildItem {
     public TextView description;
 
     public Button reminder;
